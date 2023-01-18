@@ -77,11 +77,33 @@ app.post('/animals', (req, res) => {
     .catch(err => console.log(err))
 })
   // UPDATE(PUT) -> updates a specific animal
-
+app.put('/animals/:id', (req, res) => {
+  const id = req.params.id
+  const updatedAnimal = req.body 
+  Animal.findByIdAndUpdate(id, updatedAnimal, {new: true })
+    .then(animal => {
+      res.sendStatus(204)
+    })
+    .catch(err => console.log(err))
+})
   // DELETE -> delete specific animal
-
+app.delete('/animals/:id', (req, res) => {
+  const id = req.params.id
+  Animal.findByIdAndRemove(id)
+    .then(() => {
+      res.sendStatus(204)
+    })
+    .catch(err => console.log(err))
+})
   // SHOW(GET)-> finds and displays single resource
-
+app.get('/animals/:id', (req, res) => {
+  const id = req.params.id
+  Animal.findById(id)
+    .then(animal => {
+      res.json({ animal: animal })
+    })
+    .catch(err => console.log(err))
+})
 
 
 
