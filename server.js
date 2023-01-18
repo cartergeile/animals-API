@@ -66,7 +66,16 @@ app.get('/animals', (req, res) => {
   .catch(err => console.log('The following error occurecd: \n', err))
 })
   // CREATE(POST) -> creates new document in database
-
+app.post('/animals', (req, res) => {
+  const newAnimal = req.body
+  Animal.create(newAnimal)
+    // send 201 and json response
+    .then(animal => {
+      res.status(201).json({animal: animal.toObject()})
+    })
+    // catch errors
+    .catch(err => console.log(err))
+})
   // UPDATE(PUT) -> updates a specific animal
 
   // DELETE -> delete specific animal
