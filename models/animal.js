@@ -1,6 +1,6 @@
 // Schema and model for animals resource
 
-const mongoose = require('mongoose')
+const mongoose = require('../utils/connection')
 
 // destructure Schema and model function from mongoose
 const { Schema, model } = mongoose

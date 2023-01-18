@@ -7,33 +7,14 @@ const path = require('path')
 
 // import models
 const Animal = require('./models/animal')
+const middleware = require('./utils/middleware')
 
-// database connection
-// make sure to add to .env
-const DATABASE_URL = process.env.DATABASE_URL
-// db config object
-const CONFIG = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}
-
-// establish db connectioon
-mongoose.connect(DATABASE_URL, CONFIG)
-
-// tell mongoose what to do
-mongoose.connection
-  .on('open', () => console.log('Connected to mongoose'))
-  .on('close', () => console.log('Disconnected from Mongoose'))
-  .on('error', (err) => console.log('An error occured: \n', err))
 
   // express app object
   const app = express()
 
   // middleware
-  app.use(morgan('tiny'))
-  app.use(express.urlencoded({ extended: true }))
-  app.use(express.static('public'))
-  app.use(express.json())
+  middleware(app)
 
   /* --------- ROUTES -------- */
   app.get('/', (req, res) => {
@@ -59,52 +40,8 @@ app.get('/animals/seed', (req, res) => {
     })
     
 })
-  // INDEX(GET) -> displays all animals
-app.get('/animals', (req, res) => {
-  Animal.find({})
-  .then(animals => { res.json({ animals: animals })})
-  .catch(err => console.log('The following error occurecd: \n', err))
-})
-  // CREATE(POST) -> creates new document in database
-app.post('/animals', (req, res) => {
-  const newAnimal = req.body
-  Animal.create(newAnimal)
-    // send 201 and json response
-    .then(animal => {
-      res.status(201).json({animal: animal.toObject()})
-    })
-    // catch errors
-    .catch(err => console.log(err))
-})
-  // UPDATE(PUT) -> updates a specific animal
-app.put('/animals/:id', (req, res) => {
-  const id = req.params.id
-  const updatedAnimal = req.body 
-  Animal.findByIdAndUpdate(id, updatedAnimal, {new: true })
-    .then(animal => {
-      res.sendStatus(204)
-    })
-    .catch(err => console.log(err))
-})
-  // DELETE -> delete specific animal
-app.delete('/animals/:id', (req, res) => {
-  const id = req.params.id
-  Animal.findByIdAndRemove(id)
-    .then(() => {
-      res.sendStatus(204)
-    })
-    .catch(err => console.log(err))
-})
-  // SHOW(GET)-> finds and displays single resource
-app.get('/animals/:id', (req, res) => {
-  const id = req.params.id
-  Animal.findById(id)
-    .then(animal => {
-      res.json({ animal: animal })
-    })
-    .catch(err => console.log(err))
-})
-
+// REGISTER ROUTES
+app.use('/animals', AnimalRouter)
 
 
   // Server Listener
