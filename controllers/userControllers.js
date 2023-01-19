@@ -51,6 +51,14 @@ router.post('/login', async (req, res) => {
 })
 
 
+// DELETE -> users/logout
+router.delete('/logout', (req, res) => {
+  req.session.destroy(err => {
+    console.log('this is the req.session upon logout \n', req.session)
+    res.sendStatus(204)
+  })
+})
+
 
 
 //EXPORT ROUTER
