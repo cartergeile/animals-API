@@ -1,15 +1,12 @@
 // import dependencies
 const express = require('express')
-const mongoose = require('mongoose')
 const morgan = require('morgan')
 require('dotenv').config()
 const path = require('path')
 const AnimalRouter = require('./controllers/animalControllers')
 const UserRouter = require('./controllers/userControllers')
-
-// import models
-const Animal = require('./models/animal')
 const middleware = require('./utils/middleware')
+
 
 
   // express app object
@@ -26,8 +23,7 @@ const middleware = require('./utils/middleware')
   app.use('/animals', AnimalRouter)
   app.use('/users', UserRouter)
 
-// REGISTER ROUTES
-app.use('/animals', AnimalRouter)
+
 
 
   // Server Listener

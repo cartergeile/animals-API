@@ -26,7 +26,29 @@ router.post('/signup', async (req, res) => {
 })
 
 // POST -> /users/login
-
+router.post('/login', async (req, res) => {
+  const { username, password } = req.body
+  User.findOne({ username })
+    .then(async (user) => {
+      if (user) {
+        const result = await bcrypt.compare(password, user.password)
+          if (result) {
+            req.session.username = username
+            req.session.loggedIn = true
+            req.session.userId = user.id
+            res.status(201).json({ username: user.username })
+          } else {
+            res.json({ error: 'Username or password is incorrect' })
+          }
+      } else {
+        res.json({ error: 'User does not exist'})
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      res.json(err)
+    })
+})
 
 
 
