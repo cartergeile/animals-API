@@ -7,9 +7,13 @@ const { Schema, model } = mongoose
 
 // animals Schema
 const animalSchema = new Schema({
-  name: String,
-  color: String,
-  age: Number
+  name:  {type : String },
+  color: {type: String},
+  age: {type: Number},
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }
 })
 
 // make the model
