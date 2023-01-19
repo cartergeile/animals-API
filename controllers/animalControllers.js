@@ -1,6 +1,6 @@
 // IMPORT DEPENDENCIES
 const express = require('express')
-const Animal = require('../models/animalContollers')
+const Animal = require('../models/animal')
 
 // CREATE ROUTE
 const router = express.Router()
