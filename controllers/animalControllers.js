@@ -11,6 +11,7 @@ const router = express.Router()
   // INDEX(GET) -> displays all animals
   router.get('/', (req, res) => {
     Animal.find({})
+    .populate('owner', '-password')
     .then(animals => { res.json({ animals: animals })})
     .catch(err => {
       console.log(err)
@@ -37,6 +38,7 @@ const router = express.Router()
 // GET ROUTE -> ONLY SHOW LOGGED IN USERS ANIMALS
   router.get('/mine', (req, res) => {
     Animal.find({ owner: req.session.userId })
+    .populate('owner', '-password')
     .then(animals => {
       res.status(200).json({ animals: animals })
     })
