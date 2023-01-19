@@ -12,10 +12,15 @@ const router = express.Router()
   router.get('/', (req, res) => {
     Animal.find({})
     .then(animals => { res.json({ animals: animals })})
-    .catch(err => console.log('The following error occurecd: \n', err))
+    .catch(err => {
+      console.log(err)
+      res.status(404).json(err)
+    })
   })
-    // CREATE(POST) -> creates new document in database
+    
+// CREATE(POST) -> creates new document in database
   router.post('/', (req, res) => {
+    req.body.owner = req.session.userId
     const newAnimal = req.body
     Animal.create(newAnimal)
       // send 201 and json response
@@ -23,35 +28,72 @@ const router = express.Router()
         res.status(201).json({animal: animal.toObject()})
       })
       // catch errors
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log(err)
+        res.status(404).json(err)
+      })
   })
-    // UPDATE(PUT) -> updates a specific animal
+
+// GET ROUTE -> ONLY SHOW LOGGED IN USERS ANIMALS
+  router.get('/mine', (req, res) => {
+    Animal.find({ owner: req.session.userId })
+    .then(animals => {
+      res.status(200).json({ animals: animals })
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(400).json(err)
+    })
+  })
+
+// UPDATE(PUT) -> updates a specific animal, only if owner is updating
   router.put('/:id', (req, res) => {
-    const id = req.params.id
-    const updatedAnimal = req.body 
-    Animal.findByIdAndUpdate(id, updatedAnimal, {new: true })
-      .then(animal => {
-        res.sendStatus(204)
-      })
-      .catch(err => console.log(err))
-  })
-    // DELETE -> delete specific animal
-  router.delete('/:id', (req, res) => {
-    const id = req.params.id
-    Animal.findByIdAndRemove(id)
-      .then(() => {
-        res.sendStatus(204)
-      })
-      .catch(err => console.log(err))
-  })
-    // SHOW(GET)-> finds and displays single resource
-  router.get('/:id', (req, res) => {
     const id = req.params.id
     Animal.findById(id)
       .then(animal => {
-        res.json({ animal: animal })
+        if (animal.owner == req.session.userId) {
+          res.sendStatus(204)
+          return animal.updateOne(req.body)
+        } else {
+          res.sendStatus(401)
+        }
+        
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log(err)
+        res.status(400).json(err)
+      })
+  })
+    
+// DELETE -> delete specific animal
+router.delete('/:id', (req, res) => {
+  const id = req.params.id
+  Animal.findById(id)
+    .then(animal => {
+      if (animal.owner == req.session.userId) {
+        res.sendStatus(204)
+        return animal.deleteOne(req.body)
+      } else {
+        res.sendStatus(401)
+      }
+      
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(400).json(err)
+    })
+})
+// SHOW(GET)-> finds and displays single resource
+  router.get('/:id', (req, res) => {
+    const id = req.params.id
+    Animal.findById(id)
+      .then(animals => {
+        res.json({ animals: animals })
+      })
+      .catch(err => {
+        console.log(err)
+        res.status(404).json(err)
+      })
   })
   
 
