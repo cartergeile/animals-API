@@ -30,6 +30,11 @@ router.post('/signup', async (req, res) => {
     })
 })
 
+//GET /users/login
+router.get('/login', (req, res) => {
+  res.render('users/login')
+})
+
 // POST -> /users/login
 router.post('/login', async (req, res) => {
   const { username, password } = req.body
@@ -55,12 +60,16 @@ router.post('/login', async (req, res) => {
     })
 })
 
+// GET -> /users/logout
+router.get('/logout', (req, res) => {
+  res.render('users/logout')
+})
 
 // DELETE -> users/logout
 router.delete('/logout', (req, res) => {
   req.session.destroy(err => {
     console.log('this is the req.session upon logout \n', req.session)
-    res.sendStatus(204)
+    res.redirect('/')
   })
 })
 
