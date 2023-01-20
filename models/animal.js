@@ -1,6 +1,8 @@
 // Schema and model for animals resource
 
 const mongoose = require('../utils/connection')
+// import commentSchema(subdocument)
+const commentSchema = require('./comment')
 
 // destructure Schema and model function from mongoose
 const { Schema, model } = mongoose
@@ -13,7 +15,8 @@ const animalSchema = new Schema({
   owner: {
     type: Schema.Types.ObjectId,
     ref: 'User'
-  }
+  },
+  comments: [commentSchema]
 })
 
 // make the model
