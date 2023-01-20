@@ -8,6 +8,11 @@ const router = express.Router()
 
 //-----------ROUTES
 
+//GET -> /users/signup
+router.get('/signup', (req, res) => {
+  res.render('users/signup')
+})
+
 //POST -> /users/signup
 router.post('/signup', async (req, res) => {
   const newUser = req.body
