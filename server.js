@@ -5,6 +5,7 @@ require('dotenv').config()
 const path = require('path')
 const AnimalRouter = require('./controllers/animalControllers')
 const UserRouter = require('./controllers/userControllers')
+const CommentRouter = require('./controllers/commentControllers')
 const middleware = require('./utils/middleware')
 
 
@@ -21,7 +22,9 @@ const middleware = require('./utils/middleware')
   })
 
   app.use('/animals', AnimalRouter)
+  app.use('/comments', CommentRouter)
   app.use('/users', UserRouter)
+  
 
 
 
