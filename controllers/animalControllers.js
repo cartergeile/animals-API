@@ -12,6 +12,7 @@ const router = express.Router()
   router.get('/', (req, res) => {
     Animal.find({})
     .populate('owner', '-password')
+    .populate('comments.author', '-password')
     .then(animals => { res.json({ animals: animals })})
     .catch(err => {
       console.log(err)
@@ -39,6 +40,7 @@ const router = express.Router()
   router.get('/mine', (req, res) => {
     Animal.find({ owner: req.session.userId })
     .populate('owner', '-password')
+    .populate('comments.author', '-password')
     .then(animals => {
       res.status(200).json({ animals: animals })
     })
@@ -89,6 +91,7 @@ router.delete('/:id', (req, res) => {
   router.get('/:id', (req, res) => {
     const id = req.params.id
     Animal.findById(id)
+    .populate('comments.author', 'username')
       .then(animals => {
         res.json({ animals: animals })
       })
