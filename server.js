@@ -10,15 +10,19 @@ const middleware = require('./utils/middleware')
 
 
 
+
   // express app object
-  const app = express()
+  //const app = express()
+// update app object
+const app = require('liquid-express-views')(express())
 
   // middleware
   middleware(app)
 
   /* --------- ROUTES -------- */
+  // HOME ROUTE
   app.get('/', (req, res) => {
-    res.send('Server is live, ready for requests')
+    res.render('home.liquid')
   })
 
   app.use('/animals', AnimalRouter)
