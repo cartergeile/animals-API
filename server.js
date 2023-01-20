@@ -29,8 +29,17 @@ const app = require('liquid-express-views')(express())
   app.use('/comments', CommentRouter)
   app.use('/users', UserRouter)
   
+  // renders error page
+  app.get('/error', (req, res) => {
+    const error = req.query.error || 'This page does not exist.'
 
+    res.render('error.liquid', { error })
+  })
 
+// Catch all 
+app.all('*', (req, res) => {
+  res.redirect('/error')
+})
 
 
   // Server Listener
