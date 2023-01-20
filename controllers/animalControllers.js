@@ -13,7 +13,10 @@ const router = express.Router()
     Animal.find({})
     .populate('owner', '-password')
     .populate('comments.author', '-password')
-    .then(animals => { res.json({ animals: animals })})
+    .then(animals => { 
+      //res.json({ animals: animals })
+      res.render('animals/index', { animals })
+    })
     .catch(err => {
       console.log(err)
       res.status(404).json(err)

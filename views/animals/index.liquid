@@ -1,0 +1,13 @@
+{% layout 'layout.liquid' %}
+{% block content %}
+    {% if animals.length > 0 %}
+      <h2>All Animals</h2>
+        <ul>
+          {% for animal in animals %}
+            <li>{{ animal.name }}</li>
+          {% endfor %}
+        </ul>
+    {% else %}
+      <h2>No animals yet... go create some!</h2>
+    {% endif %}
+{% endblock %}
