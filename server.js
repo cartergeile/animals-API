@@ -22,7 +22,8 @@ const app = require('liquid-express-views')(express())
   /* --------- ROUTES -------- */
   // HOME ROUTE
   app.get('/', (req, res) => {
-    res.render('home.liquid')
+    const { username, loggedIn, userId } = req.session
+    res.render('home.liquid', { username, loggedIn, userId })
   })
 
   app.use('/animals', AnimalRouter)
