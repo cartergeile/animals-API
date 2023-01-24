@@ -6,6 +6,16 @@
       <h4>This {{ animal.name }} is {{ animal.age }} years old.</h4>
       <h4>The color of this animal is: {{ animal.color }}</h4>
       <div class="color-box" style="background-color: {{ animal.color }}"></div>
+      
+      {% if animal.owner == userId %}
+      <hr>
+        <div class="btn-group">
+          <a href="" class="btn btn-primary me-3">Edit {{animal.name}}</a>
+          <form action="/animals/{{animal.id}}?_method=DELETE" method="POST">
+            <input type="submit" class="btn btn-danger" value="Delete {{animal.name}}">
+          </form>
+        </div>
+      {% endif %}
     </article>
   </div>
 {% endblock %}

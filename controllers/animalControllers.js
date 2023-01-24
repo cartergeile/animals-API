@@ -20,7 +20,8 @@ const router = express.Router()
     })
     .catch(err => {
       console.log(err)
-      res.status(404).json(err)
+      //res.status(404).json(err)
+      res.redirect(`/error?error=${err}`)
     })
   })
     
@@ -36,12 +37,14 @@ router.get('/new', (req, res) => {
     Animal.create(newAnimal)
       // send 201 and json response
       .then(animal => {
-        res.status(201).json({animal: animal.toObject()})
+        //res.status(201).json({animal: animal.toObject()})
+        res.redirect(`/animals/${animal.id}`)
       })
       // catch errors
       .catch(err => {
         console.log(err)
-        res.status(404).json(err)
+        //res.status(404).json(err)
+        res.redirect(`/error?error=${err}`)
       })
   })
 
@@ -56,7 +59,8 @@ router.get('/new', (req, res) => {
     })
     .catch(err => {
       console.log(err)
-      res.status(400).json(err)
+      //res.status(400).json(err)
+      res.redirect(`/error?error=${err}`)
     })
   })
 
@@ -69,13 +73,15 @@ router.get('/new', (req, res) => {
           res.sendStatus(204)
           return animal.updateOne(req.body)
         } else {
-          res.sendStatus(401)
+          //res.sendStatus(401)
+          res.redirect(`/error?error=You%20are%20not%20allowed%20to%20edit%20this%20animal`)
         }
         
       })
       .catch(err => {
         console.log(err)
-        res.status(400).json(err)
+        //res.status(400).json(err)
+        res.redirect(`/error?error=${err}`)
       })
   })
     
@@ -85,16 +91,21 @@ router.delete('/:id', (req, res) => {
   Animal.findById(id)
     .then(animal => {
       if (animal.owner == req.session.userId) {
-        res.sendStatus(204)
+        //res.sendStatus(204)
         return animal.deleteOne(req.body)
       } else {
-        res.sendStatus(401)
+        //res.sendStatus(401)
+        res.redirect(`/error?error=You%20are%20not%20allowed%20to%20delet%20this%20animal`)
       }
       
     })
+    .then(deletedAnimal => {
+      res.redirect('/animals/mine')
+    })
     .catch(err => {
       console.log(err)
-      res.status(400).json(err)
+      //res.status(400).json(err)
+      res.redirect(`/error?error=${err}`)
     })
 })
 // SHOW(GET)-> finds and displays single resource
@@ -108,7 +119,8 @@ router.delete('/:id', (req, res) => {
       })
       .catch(err => {
         console.log(err)
-        res.status(404).json(err)
+        //res.status(404).json(err)
+        res.redirect(`/error?error=${err}`)
       })
   })
   
