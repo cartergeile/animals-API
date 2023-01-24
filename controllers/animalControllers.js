@@ -64,19 +64,34 @@ router.get('/new', (req, res) => {
     })
   })
 
+// Get request -> edit route
+// shows form for updating an animal
+router.get('/edit/:id', (req, res) => {
+  const animalId = req.params.id
+  Animal.findById(animalId)
+  .then(animal => {
+    res.render('animals/edit', { animal, ...req.session})
+  })
+  .catch(err => {
+    res.redirect(`/error?error=${err}`)
+  })
+})
+
 // UPDATE(PUT) -> updates a specific animal, only if owner is updating
   router.put('/:id', (req, res) => {
     const id = req.params.id
     Animal.findById(id)
       .then(animal => {
         if (animal.owner == req.session.userId) {
-          res.sendStatus(204)
+          //res.sendStatus(204)
           return animal.updateOne(req.body)
         } else {
           //res.sendStatus(401)
           res.redirect(`/error?error=You%20are%20not%20allowed%20to%20edit%20this%20animal`)
-        }
-        
+        }        
+      })
+      .then(() => {
+        res.redirect(`/animals/mine`)
       })
       .catch(err => {
         console.log(err)
@@ -99,7 +114,7 @@ router.delete('/:id', (req, res) => {
       }
       
     })
-    .then(deletedAnimal => {
+    .then(() => {
       res.redirect('/animals/mine')
     })
     .catch(err => {

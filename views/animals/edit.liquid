@@ -1,0 +1,18 @@
+{% layout 'layout.liquid' %}
+{% block content %}
+  <div class="container-sm">
+    <form action="/animals/{{animal.id}}?_method=PUT" method="POST">
+      <fieldset>
+        <legend>Edit {{animal.name}}</legend>
+        <label class="form-label">Name:</label>
+        <input type="text" class="form-control" name="name" placeholder="What kind of animal is this?" required value="{{animal.name}}">
+        <label class="form-label">Color:</label>
+        <input type="color" class="form-control" name="color" placeholder="What color is this animal?" required value="{{animal.color}}">
+        <label class="form-label">Age:</label>
+        <input type="number" class="form-control" name="age" placeholder="How old is this animal?" required value="{{animal.age}}">
+      </fieldset>
+      <input type="submit" class="btn btn-success mt-3" value="Edit {{animal.name}}">
+      <a href="/animals/{{animal.id}}" class="btn btn-warning mt-3">Back</a>
+    </form>
+  </div>
+{% endblock %}
