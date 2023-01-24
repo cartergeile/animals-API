@@ -97,8 +97,9 @@ router.delete('/:id', (req, res) => {
     const id = req.params.id
     Animal.findById(id)
     .populate('comments.author', 'username')
-      .then(animals => {
-        res.json({ animals: animals })
+      .then(animal => {
+        //res.json({ animals: animals })
+        res.render('animals/show.liquid', { animal, ...req.session })
       })
       .catch(err => {
         console.log(err)

@@ -1,0 +1,11 @@
+{% layout 'layout.liquid' %}
+{% block content %}
+  <div class="container-md">
+    <article>
+      <h2>{{ animal.name }}</h2>
+      <h4>This {{ animal.name }} is {{ animal.age }} years old.</h4>
+      <h4>The color of this animal is: {{ animal.color }}</h4>
+      <div class="color-box" style="background-color: {{ animal.color }}"></div>
+    </article>
+  </div>
+{% endblock %}
