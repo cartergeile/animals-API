@@ -24,6 +24,11 @@ const router = express.Router()
     })
   })
     
+// GET for the new page
+router.get('/new', (req, res) => {
+  res.render('animals/new', { ...req.session })
+})
+
 // CREATE(POST) -> creates new document in database
   router.post('/', (req, res) => {
     req.body.owner = req.session.userId
