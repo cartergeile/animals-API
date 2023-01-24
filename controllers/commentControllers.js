@@ -20,14 +20,17 @@ router.post('/:animalId', (req, res) => {
       return animal.save()
     })
     .then(animal => {
-      res.status(201).json({ animal: animal })
+      //res.status(201).json({ animal: animal })
+      res.redirect(`/animals/${animal.id}`)
     })
     .catch(err => {
       console.log(err)
-      res.status(400).json(err)
+      //res.status(400).json(err)
+      res.redirect(`/error?error=${err}`)
     })
   } else {
-    res.sendStatus(401)
+    //res.sendStatus(401)
+    res.redirect(`/error?error=You%20are%20not%20allowed%20to%20comment%20on%20this%20animal`)
   }
 })
 

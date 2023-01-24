@@ -20,6 +20,23 @@
     <hr>
     <h4>Comments:</h4>
     <hr>
+    {% if loggedIn %}
+      <div class="col-md-6">
+        <form action="/comments/{{animal.id}}" method="POST">
+          <fieldset>
+            <legend>Add Comment</legend>
+            <label class="form-label">Comment:</label>
+            <input type="text" class="form-control mb-1" name="note">
+          </fieldset>
+          <input type="submit" class="btn btn-success" value="Add comment">
+        </form>
+      </div>
+    {% else %}
+      <div class="col-md-6">
+        <small>If you'd like to leave a comment, please log in... </small>
+      </div>
+    {% endif %}
+    <hr>
     {% if animal.comments.length > 0 %}
       <div class="container-sm justify-content-center">
         {% for comm in animal.comments %}
