@@ -46,7 +46,8 @@ const router = express.Router()
     .populate('owner', '-password')
     .populate('comments.author', '-password')
     .then(animals => {
-      res.status(200).json({ animals: animals })
+      //res.status(200).json({ animals: animals })
+      res.render('animals/index', { animals, ...req.session })
     })
     .catch(err => {
       console.log(err)

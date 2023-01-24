@@ -1,3 +1,9 @@
 body {
   background-color: bisque;
 }
+
+.color-box {
+  height: 25px;
+  width: 25px;
+  border: 1px solid grey;
+}
