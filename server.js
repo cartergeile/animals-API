@@ -33,8 +33,8 @@ const app = require('liquid-express-views')(express())
   // renders error page
   app.get('/error', (req, res) => {
     const error = req.query.error || 'This page does not exist.'
-
-    res.render('error.liquid', { error })
+    const { username, loggedIn, userId } = req.session
+    res.render('error.liquid', { error, username, loggedIn, userId })
   })
 
 // Catch all 

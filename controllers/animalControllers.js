@@ -10,12 +10,13 @@ const router = express.Router()
 
   // INDEX(GET) -> displays all animals
   router.get('/', (req, res) => {
+    const { username, loggedIn, userId } = req.session
     Animal.find({})
-    .populate('owner', '-password')
+    .populate('owner', 'username')
     .populate('comments.author', '-password')
     .then(animals => { 
       //res.json({ animals: animals })
-      res.render('animals/index', { animals })
+      res.render('animals/index', { animals, username, loggedIn, userId })
     })
     .catch(err => {
       console.log(err)
