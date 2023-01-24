@@ -42,17 +42,21 @@ router.delete('/delete/:animalId/:commentId', (req, res) => {
       if (theComment.author == req.session.userId) {
         theComment.remove()
         animal.save()
-        res.sendStatus(204)
+        //res.sendStatus(204)
+        res.redirect(`/animals/${animal.id}`)
       } else {
-        res.sendStatus(401)
+        //res.sendStatus(401)
+        res.redirect(`/error?error=You%20are%20not%20allowed%20to%20delete%20this%20comment`)
       }
     } else {
-      res.sendStatus(401)
+      //res.sendStatus(401)
+      res.redirect(`/error?error=You%20are%20not%20allowed%20to%20delete%20this%20comment`)
     }
   })
   .catch(err => {
     console.log(err)
-    res.sendStatus(400).json(err)
+    //res.sendStatus(400).json(err)
+    res.redirect(`/error?error=${err}`)
   })
 })
 
